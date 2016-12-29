@@ -13,8 +13,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -23,7 +24,7 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class FileUtils {
 	
-	private static final Logger logger = Logger.getLogger(FileUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 	
 	/**
 	 * 注意：
@@ -31,11 +32,12 @@ public class FileUtils {
 	 */
 	
 	public static void main(String[] args) {
-		PropertyConfigurator.configure("E:\\codeStudy\\study_utils\\src\\main\\resources\\log4j.properties");
+		//PropertyConfigurator.configure("E:\\codeStudy\\study_utils\\src\\main\\resources\\log4j.properties");
+		//PropertyConfigurator.configure("E:\\workspace_study\\study_utils\\src\\main\\resources\\log4j.properties");
 		//writeFile("E:\\test\\a.txt", "4444",true);
-		logger.info("read file start ...");
-		System.out.println(readFile("E:\\a.txt", "utf-8"));
-		logger.info("read file end ...");
+		logger.info("read file start ...{}","i am 占位符");
+		//System.out.println(readFile("E:\\a.txt", "utf-8"));
+		//logger.info("read file end ...");
 	}
 	
 	/**
