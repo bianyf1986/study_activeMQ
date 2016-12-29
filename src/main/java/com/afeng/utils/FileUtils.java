@@ -14,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * 
@@ -30,8 +31,11 @@ public class FileUtils {
 	 */
 	
 	public static void main(String[] args) {
+		PropertyConfigurator.configure("E:\\codeStudy\\study_utils\\src\\main\\resources\\log4j.properties");
 		//writeFile("E:\\test\\a.txt", "4444",true);
-		System.out.println(readFile("E:\\a.tx", "utf-8"));
+		logger.info("read file start ...");
+		System.out.println(readFile("E:\\a.txt", "utf-8"));
+		logger.info("read file end ...");
 	}
 	
 	/**
