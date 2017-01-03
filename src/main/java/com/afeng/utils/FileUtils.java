@@ -320,9 +320,12 @@ public class FileUtils {
 	 * @param content 写入内容
 	 * @param append 是否追加标志（true:在后面追加内容，false:覆盖掉原来内容）
 	 */
-	public static void writeFile(File file, String content, boolean append) {
+	public static void writeFile(File file, String content, Boolean append) {
 		FileWriter fw = null;
 		BufferedWriter bw = null;
+		if (append == null) {
+			append = false;
+		}
 		try {
 			logger.info("write file start , time:"+new Date().getTime());
 			fw = new FileWriter(file, append);
@@ -359,9 +362,12 @@ public class FileUtils {
 	 * @param content 写入内容
 	 * @param append 是否追加标志（true:在后面追加内容，false:覆盖掉原来内容）
 	 */
-	public static void writeFile(String path, String content, boolean append) {
+	public static void writeFile(String path, String content, Boolean append) {
 		FileWriter fw = null;
 		BufferedWriter bw = null;
+		if (append == null) {
+			append = false;
+		}
 		//换行符‘\n’
 		if (!content.startsWith("\n")) {
 			content = "\n" + content;
