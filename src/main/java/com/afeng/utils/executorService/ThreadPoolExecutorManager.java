@@ -8,16 +8,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
-import com.cyou.tv.zebra.common.util.Loader;
+import com.afeng.utils.loadConfig.LoaderUtils;
 
 /**
- * @category 任务管理器
- * @author bianyongfeng
- * @date 2016-11-24
+ * @Description : 任务管理器
+ * @author      : yfbian
  */
 public class ThreadPoolExecutorManager {
+	
 	private static Logger logger = Logger.getLogger(ThreadPoolExecutorManager.class);
-	private static ExecutorService service = null;
+	
+	private static ExecutorService executorService = null;
 
 	public static AtomicInteger sendWorkerSize = new AtomicInteger();
 
@@ -28,32 +29,39 @@ public class ThreadPoolExecutorManager {
 	}
 
 	public static void init() {
-		logger.warn("AppJobManager Init called.");
+		
+		logger.info("ThreadPoolExecutorManager Init called start.");
+		
 		// 初始化线程数
-		int threadCoreSize = Integer.parseInt(LoaderUtils.getInstance().getProps(
-				"show.job.JobThreadCoreSize"));
-		int threadMaxSize = Integer.parseInt(LoaderUtils.getInstance().getProps(
-				"show.job.JobThreadMaxSize"));
-		long keepLive = Long.parseLong(LoaderUtils.getInstance().getProps(
-				"show.job.JobThreadKeepLiveTime"));// 线程定时执行时间
-		poolSize = 1000;//Integer.parseInt(Loader.getInstance().getProps("show.job.JobQueueSize"));// 线程池子大小
-		service = new ThreadPoolExecutor(threadCoreSize, threadMaxSize,
-				keepLive, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>(poolSize));
+		int threadCoreSize = Integer.parseInt(LoaderUtils.getInstance().getThreadpoolConfig("job.corePoolSize"));
+		int threadMaxSize = Integer.parseInt(LoaderUtils.getInstance().getThreadpoolConfig("job.maximumPoolSize"));
+		long keepLive = Long.parseLong(LoaderUtils.getInstance().getThreadpoolConfig("job.keepAliveTime"));
+		poolSize = Integer.parseInt(LoaderUtils.getInstance().getThreadpoolConfig("job.workQueue"));
+		
+		executorService = new ThreadPoolExecutor(threadCoreSize, threadMaxSize,keepLive, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>(poolSize));
+		
+		logger.info("ThreadPoolExecutorManager Init called end.");
+		
 	}
 
-	public static boolean addTask(AppJobTask task) {
-		if (service == null)
+	public static boolean addTask(JobTaskVo jobTaskVo) {
+		if (executorService == null){
 			init();
+		}
+			
 		if (!isFull()) {
 			sendWorkerSize.incrementAndGet();
-			service.execute(new AppJobWorker(task));
+			executorService.execute(new JobWorkerThread(jobTaskVo));
 			return true;
-		} else
+		} else{
+			logger.info("ThreadPoolExecutorManager ThreadPoolExecutor:pool isFull.");
 			return false;
+		}
 		
 	}
 
 	private static boolean isFull() {
+		//logger.info("当前活动的线程数:"+((ThreadPoolExecutor)executorService).getActiveCount());
 		return sendWorkerSize.intValue() >= poolSize;
 	}
 }

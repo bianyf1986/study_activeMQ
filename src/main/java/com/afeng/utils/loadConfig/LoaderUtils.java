@@ -20,6 +20,8 @@ public class LoaderUtils {
 	
 	private PropertyResourceBundle webConfigBundle;
 	
+	private PropertyResourceBundle threadpoolConfigBundle;
+	
 	private static LoaderUtils loader = new LoaderUtils();
 	
 	private LoaderUtils(){
@@ -48,6 +50,18 @@ public class LoaderUtils {
 			logger.error("Exception:"+e.getMessage(), e);
 		}
 		
+		try{
+			logger.info("load config file: threadpool-config.properties start");
+			InputStream in = LoaderUtils.class.getResourceAsStream("/threadpool-config.properties");
+			InputStreamReader r;
+			r = new InputStreamReader(in, "UTF-8");
+			threadpoolConfigBundle = new PropertyResourceBundle(r);
+			r.close();
+			logger.info("load config file: threadpool-config.properties end");
+		}catch(Exception e){
+			logger.error("Exception:"+e.getMessage(), e);
+		}
+		
 	}
 	
 	public final static LoaderUtils getInstance() {
@@ -61,6 +75,11 @@ public class LoaderUtils {
 	public String getWebConfig(String key){
 		return webConfigBundle.getString(key);
 	}
+	
+	public String getThreadpoolConfig(String key){
+		return threadpoolConfigBundle.getString(key);
+	}
+	
 	public static void main(String[] args) {
 		System.out.println(LoaderUtils.getInstance().getWebConfig("key2"));
 		System.out.println(LoaderUtils.getInstance().getApplicationResources("name"));
