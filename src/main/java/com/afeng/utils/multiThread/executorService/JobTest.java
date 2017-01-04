@@ -1,4 +1,4 @@
-package com.afeng.utils.executorService;
+package com.afeng.utils.multiThread.executorService;
 
 public class JobTest {
 
