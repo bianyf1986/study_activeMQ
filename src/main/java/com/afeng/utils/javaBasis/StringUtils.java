@@ -1,5 +1,8 @@
 package com.afeng.utils.javaBasis;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 
  * @Description : 字符串工具类
@@ -86,14 +89,14 @@ public class StringUtils {
 	 * @return 截断后的结果字符串
 	 */
     public static String cutString(String value, int length) {
-    	if(isNotEmpty(value)) {
-    		if(value.length() > length){
-    			return value.substring(0, length -1) + "...";
-    		}else{
-    			return value;
-    		}
-    	}
-    	return "";
+        	if(isNotEmpty(value)) {
+        		if(value.length() > length){
+        			return value.substring(0, length -1) + "...";
+        		}else{
+        			return value;
+        		}
+        	}
+        	return "";
     }
 
     /**
@@ -105,10 +108,25 @@ public class StringUtils {
 	 * @return 进行简单处理后的字符串
 	 */
     public static String outString(String value) {
-    	if(isNotEmpty(value)) {
-			return value;
-    	}
-    	return "";
+        	if(isNotEmpty(value)) {
+    			return value;
+        	}
+        	return "";
+    }
+    
+    /**
+     * 替换字符串中的空格、回车、换行符、制表符为：""
+     * @param str
+     * @return
+     */
+    public static String replaceBlank(String str) {
+        String dest = "";
+        if (str!=null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
     }
     
 }

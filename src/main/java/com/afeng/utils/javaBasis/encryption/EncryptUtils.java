@@ -1,4 +1,4 @@
-package com.afeng.utils.javaBasis;
+package com.afeng.utils.javaBasis.encryption;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
